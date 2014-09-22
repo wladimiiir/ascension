@@ -2,7 +2,7 @@
  * Copyright (c) 2010-2014 Software AG. All Rights Reserved.
  */
 
-package sk.magiksoft.ascension.screen;
+package sk.wladimiiir.ascension.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;

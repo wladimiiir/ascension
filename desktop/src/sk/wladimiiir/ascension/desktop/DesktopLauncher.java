@@ -1,8 +1,8 @@
-package sk.magiksoft.ascension.desktop;
+package sk.wladimiiir.ascension.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import sk.magiksoft.ascension.MainGame;
+import sk.wladimiiir.ascension.MainGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
