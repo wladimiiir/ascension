@@ -1,6 +1,6 @@
 package sk.wladimiiir.ascension.entity;
 
-import java.awt.*;
+import com.badlogic.gdx.graphics.Color;
 
 /**
  * User: wladimiiir

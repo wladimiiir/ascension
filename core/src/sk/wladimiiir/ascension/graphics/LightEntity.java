@@ -4,6 +4,8 @@ import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 /**
  * User: wladimiiir
@@ -12,40 +14,58 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class LightEntity {
     private static final int CONE_LIGHT_COUNT = 20;
-    private static final int LIGHT_DEGREE_STEP = 180 / (CONE_LIGHT_COUNT / 2);
+    private static final int LIGHT_DEGREE_STEP = 360 / CONE_LIGHT_COUNT;
     private static final int CONE_DEGREE = 8;
+
     private final MyConeLight[] lights;
-    private final int minSize;
-    private final int maxSize;
+    private final float minSize;
+    private final float maxSize;
+    private final float positionX;
+    private final float positionY;
+    private final PointLight centerLight;
 
     private boolean distanceIncreasing = true;
 
-    public LightEntity(RayHandler rayHandler, Color entityColor, float positionX, float positionY, int minSize, int maxSize) {
+    public LightEntity(RayHandler rayHandler, Color entityColor, float positionX, float positionY, float minSize, float maxSize) {
+        this.positionX = positionX;
+        this.positionY = positionY;
         this.minSize = minSize;
         this.maxSize = maxSize;
         lights = new MyConeLight[CONE_LIGHT_COUNT];
         for (int index = 0; index < lights.length; index++) {
             lights[index] = new MyConeLight(rayHandler, 3, entityColor, minSize, positionX, positionY, index * LIGHT_DEGREE_STEP, CONE_DEGREE);
         }
-        new PointLight(rayHandler, 100, Color.WHITE, minSize, positionX, positionY);
+        centerLight = new PointLight(rayHandler, 100, entityColor, maxSize, positionX, positionY);
+    }
+
+    public void attachToBody(Body body, float offsetX, float offsetY) {
+        for (MyConeLight light : lights) {
+            light.attachToBody(body, offsetX, offsetY);
+        }
+        centerLight.attachToBody(body, offsetX, offsetY);
     }
 
     public void update() {
         for (int index = 0; index < lights.length; index++) {
             final MyConeLight light = lights[index];
-            light.setDirection(light.getDirection() + 1);
+            float newDirection = light.getDirection() + 1f;
+            light.setDirection(newDirection > 360 ? 0 : newDirection);
             if (distanceIncreasing) {
-                light.setDistance(light.getDistance() + 1);
+//                light.setDistance(light.getDistance() + 0.1f);
                 if (light.getDistance() > maxSize) {
                     distanceIncreasing = false;
                 }
             } else {
-                light.setDistance(light.getDistance() - 1);
+//                light.setDistance(light.getDistance() - 0.1f);
                 if (light.getDistance() < minSize) {
                     distanceIncreasing = true;
                 }
             }
         }
+    }
+
+    public Vector2 getPosition() {
+        return new Vector2(positionX, positionY);
     }
 
     private class MyConeLight extends ConeLight {

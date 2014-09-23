@@ -34,9 +34,9 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/desktop" />
+            <option value="D:\Development\ascension" />
+            <option value="D:\Development\ascension\core" />
+            <option value="D:\Development\ascension\desktop" />
           </set>
         </option>
       </GradleProjectSettings>
