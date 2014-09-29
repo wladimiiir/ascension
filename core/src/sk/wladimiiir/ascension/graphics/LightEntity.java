@@ -51,12 +51,10 @@ public class LightEntity {
             float newDirection = light.getDirection() + 1f;
             light.setDirection(newDirection > 360 ? 0 : newDirection);
             if (distanceIncreasing) {
-//                light.setDistance(light.getDistance() + 0.1f);
                 if (light.getDistance() > maxSize) {
                     distanceIncreasing = false;
                 }
             } else {
-//                light.setDistance(light.getDistance() - 0.1f);
                 if (light.getDistance() < minSize) {
                     distanceIncreasing = true;
                 }

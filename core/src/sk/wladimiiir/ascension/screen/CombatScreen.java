@@ -15,14 +15,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import sk.wladimiiir.ascension.entity.Combatant;
 import sk.wladimiiir.ascension.entity.Element;
 import sk.wladimiiir.ascension.graphics.ElementGraphic;
 import sk.wladimiiir.ascension.graphics.LightEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * User: wladimiiir
@@ -41,7 +42,6 @@ public class CombatScreen extends ScreenAdapter {
     private ShapeRenderer shapeRenderer;
     private RayHandler rayHandler;
     private OrthographicCamera camera;
-    private Box2DDebugRenderer worldRenderer;
 
     private LightEntity leftEntity;
     private LightEntity rightEntity;
@@ -78,12 +78,13 @@ public class CombatScreen extends ScreenAdapter {
         final BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(fromPosition);
+        bodyDef.angle = leftToRight ? 0 : (float) Math.PI;
 
         final Body body = world.createBody(bodyDef);
         final LightEntity lightEntity = new LightEntity(rayHandler, element.getColor(), 0, 0, 20, 40);
         lightEntity.attachToBody(body, 0, 0);
 
-        final int velocity = 1000;
+        final int velocity = 100;
         body.applyLinearImpulse(new Vector2((leftToRight ? 1 : -1) * velocity, 0), body.getWorldCenter(), false);
     }
 
@@ -109,9 +110,6 @@ public class CombatScreen extends ScreenAdapter {
 
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(camera.combined);
-
-        worldRenderer = new Box2DDebugRenderer();
-        worldRenderer.setDrawVelocities(true);
 
         leftElements = createElementGraphics(new ArrayList<>(leftCombatant.getKnownElements()), 10 / PIXELS_TO_METER, screenHeight - 50 / PIXELS_TO_METER, false);
         rightElements = createElementGraphics(new ArrayList<>(rightCombatant.getKnownElements()), screenWidth - 10 / PIXELS_TO_METER, screenHeight - 50 / PIXELS_TO_METER, true);
@@ -157,7 +155,7 @@ public class CombatScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        world.step(1 / 90f, 6, 2);
+        world.step(1 / 45f, 6, 2);
 
         batch.begin();
         backgroundImage.draw(batch);
@@ -174,6 +172,5 @@ public class CombatScreen extends ScreenAdapter {
         }
 
         rayHandler.updateAndRender();
-        worldRenderer.render(world, camera.combined);
     }
 }
