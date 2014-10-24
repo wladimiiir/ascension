@@ -13,13 +13,13 @@ import sk.wladimiiir.ascension.entity.Element;
  * @version 1.0
  * @since 23. 9. 2014, 11:40
  */
-public class ElementGraphic {
+public class ElementButton {
     private final Element element;
     private final float size;
     private final float x;
     private final float y;
 
-    public ElementGraphic(Element element, float x, float y, float size) {
+    public ElementButton(Element element, float x, float y, float size) {
         this.element = element;
         this.x = x;
         this.y = y;

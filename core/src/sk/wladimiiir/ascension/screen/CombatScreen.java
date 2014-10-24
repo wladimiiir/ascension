@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import sk.wladimiiir.ascension.entity.Combatant;
 import sk.wladimiiir.ascension.entity.Element;
-import sk.wladimiiir.ascension.graphics.ElementGraphic;
+import sk.wladimiiir.ascension.graphics.ElementButton;
 import sk.wladimiiir.ascension.graphics.LightEntity;
 
 import java.util.ArrayList;
@@ -45,19 +45,19 @@ public class CombatScreen extends ScreenAdapter {
 
     private LightEntity leftEntity;
     private LightEntity rightEntity;
-    private ElementGraphic[] leftElements;
-    private ElementGraphic[] rightElements;
+    private ElementButton[] leftElements;
+    private ElementButton[] rightElements;
 
     private InputProcessor inputProcessor = new InputAdapter() {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            for (ElementGraphic leftElement : leftElements) {
+            for (ElementButton leftElement : leftElements) {
                 if (leftElement.containsPoint(screenX / PIXELS_TO_METER, (Gdx.graphics.getHeight() - screenY) / PIXELS_TO_METER)) {
                     fireElement(leftElement.getElement(), leftEntity.getPosition(), rightEntity.getPosition());
                     return true;
                 }
             }
-            for (ElementGraphic rightElement : rightElements) {
+            for (ElementButton rightElement : rightElements) {
                 if (rightElement.containsPoint(screenX / PIXELS_TO_METER, (Gdx.graphics.getHeight() - screenY) / PIXELS_TO_METER)) {
                     fireElement(rightElement.getElement(), rightEntity.getPosition(), leftEntity.getPosition());
                     return true;
@@ -115,8 +115,8 @@ public class CombatScreen extends ScreenAdapter {
         rightElements = createElementGraphics(new ArrayList<>(rightCombatant.getKnownElements()), screenWidth - 10 / PIXELS_TO_METER, screenHeight - 50 / PIXELS_TO_METER, true);
     }
 
-    private ElementGraphic[] createElementGraphics(List<Element> elements, float startX, float y, boolean rightToLeft) {
-        final ElementGraphic[] graphics = new ElementGraphic[elements.size()];
+    private ElementButton[] createElementGraphics(List<Element> elements, float startX, float y, boolean rightToLeft) {
+        final ElementButton[] graphics = new ElementButton[elements.size()];
         final float elementSize = 30 / PIXELS_TO_METER;
         int index = 0;
 
@@ -130,7 +130,7 @@ public class CombatScreen extends ScreenAdapter {
             } else {
                 x = startX + (elementSize + 5 / PIXELS_TO_METER) * index;
             }
-            graphics[index++] = new ElementGraphic(element, x, y, elementSize);
+            graphics[index++] = new ElementButton(element, x, y, elementSize);
         }
 
         return graphics;
@@ -164,10 +164,10 @@ public class CombatScreen extends ScreenAdapter {
         leftEntity.update();
         rightEntity.update();
 
-        for (ElementGraphic leftElement : leftElements) {
+        for (ElementButton leftElement : leftElements) {
             leftElement.draw(shapeRenderer);
         }
-        for (ElementGraphic rightElement : rightElements) {
+        for (ElementButton rightElement : rightElements) {
             rightElement.draw(shapeRenderer);
         }
 
